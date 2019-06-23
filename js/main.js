@@ -1,59 +1,68 @@
 "use strict";
 
-var SHADOW_TRIGGER_PROCENT = 10;
+var _slider_stop_procent = 1;
 
 $( document ).ready( function(e) {
+	var $container = $(".container");
+
 	function setContainerHeight( value ){
 		$(".container").css( "height", value );
 	};
 
-	function setSliderSize( value ){
+	function setContainerWidth( value ){
+		console.log( value );
+		$(".container").css( "width", value );
+	};
+
+	function setSliderHeight( value ){
 		$(".img-comp-slider").css( "height", value );
 	};
 
-	function getCurrentSize(){
+	function getCurrentHeight(){
 		return $( ".img-right" ).height();
 	};
 
+	function getCurrentWidth(){
+		return $( ".img-right" ).width();
+	};
+
 	$(window).resize( function(e) {
-		setContainerHeight( getCurrentSize() + "px" );
-		setSliderSize( getCurrentSize() + "px" );
+		setContainerHeight( getCurrentHeight() + "px" );
+		setContainerWidth( getCurrentWidth() + "px" );
 	});
 
 	document.addEventListener('touchmove', function(e) {
 		updateScreen(e);
 	});
 
-	$(window).mousemove( function(e) {
+	document.addEventListener('mousemove', function(e) {
 		updateScreen(e);
 	});
 
-	$(window).click( function(e) {
-		console.log( );
+	document.addEventListener('touchstart', function(e) {
+		updateScreen(e);
 	});
 
 	function updateScreen(e){
 		var clientX = e.pageX || e.touches[0].clientX; 
 		var procent = clientX * 100 / $(window).width();
-		if ( procent < 2 || procent > 98 )
+		if ( procent < _slider_stop_procent || procent > 100 - _slider_stop_procent )
 			return;
 
-		if ( procent < SHADOW_TRIGGER_PROCENT ){
-			$( ".shadow-left" ).css( "opacity", 1 - procent / SHADOW_TRIGGER_PROCENT );
-		} else {
-			$( ".shadow-left" ).css( "opacity", 0 );
-		}
-
-		if ( procent > (100 - SHADOW_TRIGGER_PROCENT) ){
-			$( ".shadow-right" ).css( "opacity", ( procent - (100 - SHADOW_TRIGGER_PROCENT) ) / SHADOW_TRIGGER_PROCENT );
-		} else {
-			$( ".shadow-right" ).css( "opacity", 0 );
-		}
 		$( ".img-right" ).css( "margin-left", procent + "%" );
 		$( ".img-right img" ).css( "left", "-" + procent + "%" );
-		$( ".img-comp-slider" ).css( {"left": procent + "%"} );
 	}
 
-	setContainerHeight( getCurrentSize() + "px" );
-	setSliderSize( getCurrentSize() + "px" );
+	setContainerHeight( getCurrentHeight() + "px" );
+	setContainerWidth( getCurrentWidth() + "px" );
+
+	$( ".mobile-tutorial" )
+	.on( "mousedown", function(e) {
+		$(this).css( {"display" : "none"} );
+	})
+	.on( "touchstart", function(e) {
+		$(this).css( {"display" : "none"} );
+	});
+
 });
+
