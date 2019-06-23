@@ -10,7 +10,6 @@ $( document ).ready( function(e) {
 	};
 
 	function setContainerWidth( value ){
-		console.log( value );
 		$(".container").css( "width", value );
 	};
 
@@ -63,6 +62,4 @@ $( document ).ready( function(e) {
 	.on( "touchstart", function(e) {
 		$(this).css( {"display" : "none"} );
 	});
-
 });
-
